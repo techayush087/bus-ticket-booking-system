@@ -1,0 +1,23 @@
+<!-- templates/fragments/header.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav class="navbar" th:fragment="navbar">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <i class="fas fa-bus-alt"></i>
+                <span>BusGo</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#objective">About</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="/login" class="btn btn-nav">Sign In</a></li>
+            </ul>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+</nav>
+</body>
+</html>

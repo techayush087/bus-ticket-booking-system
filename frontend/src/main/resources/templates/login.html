@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — BusGo</title>
+  <link rel="stylesheet" th:href="@{/css/login.css}" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+<!-- ───────────── BACKGROUND LAYER ───────────── -->
+<div class="bg-layer">
+  <!-- Animated blobs -->
+  <div class="bg-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+    <div class="shape s3"></div>
+    <div class="shape s4"></div>
+    <div class="shape s5"></div>
+  </div>
+
+  <!-- Grid pattern overlay -->
+  <div class="bg-grid"></div>
+
+  <!-- Floating particles -->
+  <div class="bg-particles">
+    <span class="dot d1"></span>
+    <span class="dot d2"></span>
+    <span class="dot d3"></span>
+    <span class="dot d4"></span>
+    <span class="dot d5"></span>
+    <span class="dot d6"></span>
+    <span class="dot d7"></span>
+    <span class="dot d8"></span>
+    <span class="dot d9"></span>
+    <span class="dot d10"></span>
+  </div>
+</div>
+
+<!-- ───────────── MAIN CONTAINER ───────────── -->
+<div class="login-wrapper">
+
+  <!-- ── LEFT PANEL (Branding) ── -->
+  <div class="brand-panel">
+    <div class="brand-content fade-up">
+      <!-- Logo -->
+      <a href="/" class="brand-logo">
+        <div class="logo-icon">
+          <i class="fas fa-bus-alt"></i>
+        </div>
+        <span>BusGo</span>
+      </a>
+
+      <h1 class="brand-title">
+        Welcome<br />Back <span class="highlight">Traveler</span>
+      </h1>
+      <p class="brand-text">
+        Sign in to access your bookings, manage reservations,
+        and explore new routes across the country.
+      </p>
+
+      <!-- Feature pills -->
+      <div class="brand-features">
+        <div class="feature-pill">
+          <i class="fas fa-shield-alt"></i>
+          <span>Secure Login</span>
+        </div>
+        <div class="feature-pill">
+          <i class="fas fa-bolt"></i>
+          <span>Instant Access</span>
+        </div>
+        <div class="feature-pill">
+          <i class="fas fa-ticket-alt"></i>
+          <span>Your Bookings</span>
+        </div>
+      </div>
+
+      <!-- Decorative orbit (small version) -->
+      <div class="brand-orbit">
+        <div class="orbit-ring-sm r1">
+          <div class="orbit-dot od1"></div>
+          <div class="orbit-dot od2"></div>
+        </div>
+        <div class="orbit-ring-sm r2">
+          <div class="orbit-dot od3"></div>
+          <div class="orbit-dot od4"></div>
+          <div class="orbit-dot od5"></div>
+        </div>
+        <div class="orbit-center-sm">
+          <i class="fas fa-bus-alt"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom stats -->
+    <div class="brand-stats fade-up delay-2">
+      <div class="bstat">
+        <strong>500+</strong><span>Routes</span>
+      </div>
+      <div class="bstat-divider"></div>
+      <div class="bstat">
+        <strong>10K+</strong><span>Travelers</span>
+      </div>
+      <div class="bstat-divider"></div>
+      <div class="bstat">
+        <strong>4.8★</strong><span>Rating</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT PANEL (Login Form) ── -->
+  <div class="form-panel">
+    <div class="form-container fade-up delay-1">
+
+      <!-- Mobile logo (hidden on desktop) -->
+      <a href="/" class="mobile-logo">
+        <i class="fas fa-bus-alt"></i>
+        <span>BusGo</span>
+      </a>
+
+      <div class="form-header">
+        <h2>Sign In</h2>
+        <p>Enter your credentials to continue</p>
+      </div>
+
+      <!-- Error message placeholder -->
+      <div class="alert alert-error" th:if="${error}" style="display:none;">
+        <i class="fas fa-exclamation-circle"></i>
+        <span th:text="${error}">Invalid email or password</span>
+      </div>
+
+      <!-- Success message placeholder -->
+      <div class="alert alert-success" th:if="${success}" style="display:none;">
+        <i class="fas fa-check-circle"></i>
+        <span th:text="${success}">Account created successfully!</span>
+      </div>
+
+      <p th:if="${error}" style="color:red;">
+        <span th:text="${error}"></span>
+      </p>
+
+      <!-- Login Form -->
+      <form th:action="@{/login}" method="post" class="login-form">
+
+        <!-- Email -->
+        <div class="input-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <i class="fas fa-envelope"></i>
+            <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required
+                    autocomplete="email"
+            />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="input-group">
+          <div class="label-row">
+            <label for="password">Password</label>
+            <a href="/forgot-password" class="forgot-link">Forgot password?</a>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-lock"></i>
+            <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    required
+                    autocomplete="current-password"
+            />
+            <button type="button" class="toggle-password" aria-label="Toggle password">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary btn-full">
+          <span>Sign In</span>
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <!-- Register link -->
+      <p class="register-link">
+        Don't have an account?
+        <a href="/register">Create one now</a>
+      </p>
+    </div>
+
+    <!-- Back to home -->
+    <a href="/" class="back-home fade-up delay-3">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back to Home</span>
+    </a>
+  </div>
+
+</div>
+
+<script>
+  // Toggle password visibility
+  document.querySelectorAll('.toggle-password').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.parentElement.querySelector('input');
+      const icon  = btn.querySelector('i');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    });
+  });
+
+  // Show alert messages (remove inline display:none if th:if is true)
+  document.querySelectorAll('.alert').forEach(a => {
+    if (a.hasAttribute('th:if') === false) a.style.display = 'flex';
+  });
+
+  // Input focus animation
+  document.querySelectorAll('.input-wrapper input').forEach(input => {
+    input.addEventListener('focus', () => input.parentElement.classList.add('focused'));
+    input.addEventListener('blur', () => {
+      if (!input.value) input.parentElement.classList.remove('focused');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">Office Resources</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/view-layout :: background}"></div>
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+    <main class="content">
+
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-purple"><i class="fas fa-building"></i></div>
+            <div>
+                <h1 th:text="${title}">Office Resources</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+            <div class="header-badge">
+                <span>Offices</span>
+                <strong th:text="${#lists.size(offices)}">0</strong>
+            </div>
+        </div>
+
+        <!-- Office Cards -->
+        <div class="office-cards fade-in delay-1" th:each="office : ${offices}">
+            <div class="office-header">
+                <div class="office-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div>
+                    <h2 th:text="${office['officeName']}">Office Name</h2>
+                    <span class="office-id">Office ID: <strong th:text="${office['officeId']}">—</strong></span>
+                </div>
+            </div>
+
+            <!-- Buses Section -->
+            <div class="resources-section">
+                <div class="section-title-row">
+                    <div class="section-title-icon"><i class="fas fa-bus"></i></div>
+                    <h3>Buses</h3>
+                    <span class="count-badge" th:text="${#lists.size(office['buses'])} + ' buses'"></span>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Bus ID</th>
+                                <th>Registration</th>
+                                <th>Type</th>
+                                <th>Capacity</th>
+                                <th>Agency</th>
+                                <th>Office Mail</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="bus, i : ${office['buses']}">
+                                <td class="col-index" th:text="${i.count}">1</td>
+                                <td class="mono font-bold" th:text="${bus['busId']}">—</td>
+                                <td class="mono" th:text="${bus['registrationNumber']}">—</td>
+                                <td><span class="badge badge-blue" th:text="${bus['type']}">—</span></td>
+                                <td th:text="${bus['capacity']}">—</td>
+                                <td th:text="${bus['office']['agency']['name']}">—</td>
+                                <td class="small" th:text="${bus['office']['officeMail']}">—</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drivers Section -->
+            <div class="resources-section">
+                <div class="section-title-row">
+                    <div class="section-title-icon"><i class="fas fa-id-badge"></i></div>
+                    <h3>Drivers</h3>
+                    <span class="count-badge" th:text="${#lists.size(office['drivers'])} + ' drivers'"></span>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Driver ID</th>
+                                <th>Name</th>
+                                <th>License</th>
+                                <th>Phone</th>
+                                <th>City</th>
+                                <th>State</th>
+                                <th>Agency</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="driver, i : ${office['drivers']}">
+                                <td class="col-index" th:text="${i.count}">1</td>
+                                <td class="mono font-bold" th:text="${driver['driverId']}">—</td>
+                                <td th:text="${driver['name']}">—</td>
+                                <td class="mono" th:text="${driver['licenseNumber']}">—</td>
+                                <td th:text="${driver['phone']}">—</td>
+                                <td th:text="${driver['address']['city']}">—</td>
+                                <td th:text="${driver['address']['state']}">—</td>
+                                <td th:text="${driver['agencyOffice']['agency']['name']}">—</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+<script th:src="@{/js/view-common.js}"></script>
+</body>
+</html>

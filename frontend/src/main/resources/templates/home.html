@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bus Ticket Booking</title>
+  <link rel="stylesheet" th:href="@{/css/home.css}" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body class="app-bg">
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="nav-logo">
+      <i class="fas fa-bus-alt"></i>
+      <span>BusGo</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#objective">About</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="/login" class="btn btn-nav">Sign In</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+
+<main class="page">
+  <!-- ───────────── HERO ───────────── -->
+  <section class="hero">
+    <!-- Animated Background Shapes -->
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+    </div>
+
+    <!-- Particle dots -->
+    <div class="hero-particles">
+      <span class="particle p1"></span>
+      <span class="particle p2"></span>
+      <span class="particle p3"></span>
+      <span class="particle p4"></span>
+      <span class="particle p5"></span>
+      <span class="particle p6"></span>
+      <span class="particle p7"></span>
+      <span class="particle p8"></span>
+    </div>
+
+    <div class="hero-inner">
+      <!-- Left: Text Content -->
+      <div class="hero-content">
+          <span class="hero-badge fade-up">
+            <i class="fas fa-route"></i> Fast &amp; Reliable Booking
+          </span>
+        <h1 class="hero-title fade-up delay-1">
+          Book Your Bus<br />
+          Tickets <span class="highlight">Seamlessly</span>
+        </h1>
+        <p class="hero-subtitle fade-up delay-2">
+          Travel smart with our modern booking platform. Search routes, compare
+          schedules, reserve seats, and pay&nbsp;— all in one place.
+        </p>
+        <div class="hero-actions fade-up delay-3">
+          <a href="/login" class="btn btn-primary btn-lg">
+            <i class="fas fa-arrow-right"></i> Get Started
+          </a>
+          <a href="#how-it-works" class="btn btn-outline btn-lg">
+            <i class="fas fa-play-circle"></i> How It Works
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Decorative Visual -->
+      <div class="hero-visual fade-up delay-3">
+        <!-- Orbit Ring System -->
+        <div class="orbit-system">
+          <div class="orbit-ring ring-1">
+            <div class="orbit-icon oi-1"><i class="fas fa-bus"></i></div>
+            <div class="orbit-icon oi-2"><i class="fas fa-map-marker-alt"></i></div>
+          </div>
+          <div class="orbit-ring ring-2">
+            <div class="orbit-icon oi-3"><i class="fas fa-ticket-alt"></i></div>
+            <div class="orbit-icon oi-4"><i class="fas fa-clock"></i></div>
+            <div class="orbit-icon oi-5"><i class="fas fa-shield-alt"></i></div>
+          </div>
+          <div class="orbit-ring ring-3">
+            <div class="orbit-icon oi-6"><i class="fas fa-credit-card"></i></div>
+            <div class="orbit-icon oi-7"><i class="fas fa-wifi"></i></div>
+          </div>
+
+          <!-- Central Glow -->
+          <div class="orbit-center">
+            <div class="center-glow"></div>
+            <div class="center-icon">
+              <i class="fas fa-bus-alt"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Mini-Cards -->
+        <div class="float-card fc-1 glass-dark">
+          <i class="fas fa-route"></i>
+          <div>
+            <strong>500+</strong>
+            <span>Routes</span>
+          </div>
+        </div>
+        <div class="float-card fc-2 glass-dark">
+          <i class="fas fa-users"></i>
+          <div>
+            <strong>10K+</strong>
+            <span>Travelers</span>
+          </div>
+        </div>
+        <div class="float-card fc-3 glass-dark">
+          <i class="fas fa-star"></i>
+          <div>
+            <strong>4.8</strong>
+            <span>Rating</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── PROJECT OBJECTIVE ───────────── -->
+  <section class="section objective" id="objective">
+    <div class="section-container">
+      <div class="objective-header">
+        <span class="section-badge">Project Objective</span>
+        <h2 class="section-title">
+          A Complete Bus Booking<br />Management System
+        </h2>
+        <p class="section-subtitle">
+          A full-stack web application built with Spring Boot and Thymeleaf for
+          managing reservations, routes, schedules, and payments — all within a
+          clean, intuitive interface.
+        </p>
+      </div>
+
+      <div class="objective-grid"><!-- Card 1 -->
+        <article class="obj-card glass-light">
+          <div class="obj-icon">
+            <i class="fas fa-user-shield"></i>
+          </div>
+          <h3>Authentication & Security</h3>
+          <p>JWT-based authentication with secure login, role-based access, and protected API endpoints.</p>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="obj-card glass-light">
+          <div class="obj-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3>Trip Search & Booking</h3>
+          <p>Search trips by routes and timings, with seamless booking and trip management.</p>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="obj-card glass-light">
+          <div class="obj-icon">
+            <i class="fas fa-couch"></i>
+          </div>
+          <h3>Seat Availability</h3>
+          <p>Real-time seat tracking with interactive reservation and booking validation.</p>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="obj-card glass-light">
+          <div class="obj-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <h3>Payments & Bookings</h3>
+          <p>Manage booking records, payment details, transactions, and customer history.</p>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="obj-card glass-light">
+          <div class="obj-icon">
+            <i class="fas fa-bus"></i>
+          </div>
+          <h3>Agency & Fleet Management</h3>
+          <p>Manage buses, drivers, and agency operations including scheduling and assignments.</p>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="obj-card glass-light">
+          <div class="obj-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Reviews & Analytics</h3>
+          <p>Customer reviews, trip feedback, driver schedules, and performance insights.</p>
+        </article>
+
+
+      </div>
+
+      <!-- Tech Stack Strip -->
+      <div class="tech-strip">
+        <div class="tech-strip-label">Built With</div>
+        <div class="tech-tags">
+          <span class="tech-tag"><i class="fas fa-leaf"></i> Spring Boot 5</span>
+          <span class="tech-tag"><i class="fas fa-file-code"></i> Thymeleaf</span>
+          <span class="tech-tag"><i class="fas fa-database"></i> MySQL</span>
+          <span class="tech-tag"><i class="fas fa-lock"></i> Spring Security</span>
+          <span class="tech-tag"><i class="fas fa-code"></i> REST API</span>
+          <span class="tech-tag"><i class="fas fa-mobile-alt"></i> Responsive CSS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── HOW IT WORKS ───────────── -->
+  <section class="section how-it-works" id="how-it-works">
+    <div class="section-container">
+      <span class="section-badge">Simple Process</span>
+      <h2 class="section-title">Book in 4 Easy Steps</h2>
+      <p class="section-subtitle">
+        From searching routes to boarding — everything is streamlined.
+      </p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-icon"><i class="fas fa-map-marked-alt"></i></div>
+          <h3>Search Route</h3>
+          <p>Enter your departure, destination, and travel date.</p>
+        </div>
+        <div class="step-connector"><i class="fas fa-chevron-right"></i></div>
+
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-icon"><i class="fas fa-bus"></i></div>
+          <h3>Choose Bus</h3>
+          <p>Compare buses by price, time, ratings, and amenities.</p>
+        </div>
+        <div class="step-connector"><i class="fas fa-chevron-right"></i></div>
+
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-icon"><i class="fas fa-credit-card"></i></div>
+          <h3>Make Payment</h3>
+          <p>Pay securely with cards, UPI, or net banking.</p>
+        </div>
+        <div class="step-connector"><i class="fas fa-chevron-right"></i></div>
+
+        <div class="step-card">
+          <div class="step-number">04</div>
+          <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+          <h3>Travel Happy</h3>
+          <p>Get your e-ticket and enjoy a comfortable journey.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── TEAM ───────────── -->
+  <section class="section team" id="team">
+    <div class="section-container">
+      <span class="section-badge">Our Team</span>
+      <h2 class="section-title">Meet the Developers</h2>
+      <p class="section-subtitle">
+        A talented group of developers bringing this project to life.
+      </p>
+
+  <div class="team-grid">
+    <article class="team-card glass-light">
+      <div class="team-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h3>Mohammad Javed</h3>
+      <span class="team-role">UI/UX &amp; Customer &amp; Trip API</span>
+      <p>
+        Led UI/UX design and developed Customer API for fetching customer details, and features like trip search.
+      </p>
+      <div class="team-socials">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </article>
+
+    <article class="team-card glass-light">
+      <div class="team-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h3>Shivam Verma</h3>
+      <span class="team-role">Customer &amp; Agency API</span>
+      <p>
+       Developed api of customer bookings & payments, agency listing by city, and agency-office resource management.
+      </p>
+      <div class="team-socials">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </article>
+
+    <article class="team-card glass-light">
+      <div class="team-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h3>Ayush Chaudhary</h3>
+      <span class="team-role">Agency & Trip API</span>
+      <p>
+        Developed Agency and Route APIs including agency office resources and
+        route-based trip retrieval with stop and scheduling details.
+      </p>
+      <div class="team-socials">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </article>
+
+    <article class="team-card glass-light">
+      <div class="team-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h3>Shreshtha Gupta</h3>
+      <span class="team-role">Bookings &amp; Reviews API</span>
+      <p>
+        Built Booking and Review APIs including complete booking details,
+        payment tracking, and customer-specific trip reviews.
+      </p>
+      <div class="team-socials">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </article>
+
+    <article class="team-card glass-light">
+      <div class="team-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <h3>Deep Gupta</h3>
+      <span class="team-role">Trips &amp; Routes API</span>
+      <!-- Deep Gupta -->
+      <p>
+        Implemented api of trip views, seat availability, driver schedules, and trip analytics between locations.
+      </p>
+      <div class="team-socials">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </article>
+  </div>
+</div>
+  </section>
+
+</main>
+
+<!-- ───────────── FOOTER ───────────── -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <a href="/" class="footer-logo">
+        <i class="fas fa-bus-alt"></i> BusGo
+      </a>
+      <p>Modern bus ticket booking for the modern traveler.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 BusGo. Built with ❤️ by Team BusGo.</p>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const toggle = document.getElementById('navToggle');
+  const navLinks = document.querySelector('.nav-links');
+  toggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+    toggle.classList.toggle('active');
+  });
+
+  // Close nav on link click (mobile)
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      toggle.classList.remove('active');
+    });
+  });
+
+  // Scroll reveal via IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll(
+          '.obj-card, .step-card, .team-card, .tech-strip, .objective-header'
+  ).forEach(el => observer.observe(el));
+
+  // Navbar solid bg on scroll
+  window.addEventListener('scroll', () => {
+    document.querySelector('.navbar')
+            .classList.toggle('scrolled', window.scrollY > 50);
+  });
+</script>
+</body>
+</html>

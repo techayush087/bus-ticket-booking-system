@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">API View — BusGo</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet" />
+</head>
+
+<body>
+
+<!-- ───────────── BACKGROUND ───────────── -->
+<div class="bg-layer">
+    <div class="bg-shapes">
+        <div class="shape s1"></div>
+        <div class="shape s2"></div>
+        <div class="shape s3"></div>
+    </div>
+    <div class="bg-grid"></div>
+</div>
+
+<!-- ───────────── WRAPPER ───────────── -->
+<div class="page-wrapper">
+
+    <!-- ── TOP NAV ── -->
+    <nav class="topnav">
+        <div class="nav-left">
+            <a th:href="@{/dashboard}" class="btn-back">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a href="/" class="nav-logo">
+                <div class="logo-icon"><i class="fas fa-bus-alt"></i></div>
+                <span>BusGo</span>
+            </a>
+            <div class="nav-divider"></div>
+            <div class="nav-breadcrumb">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <span th:text="${title}">API View</span>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="dev-badge">
+                <i class="fas fa-database"></i>
+                <span>API Response</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── CONTENT ── -->
+    <main class="content">
+
+        <!-- API Info Header -->
+        <section class="api-header fade-in">
+            <div class="api-header-card">
+                <div class="api-header-bg">
+                    <div class="ahb-s ahb-s1"></div>
+                    <div class="ahb-s ahb-s2"></div>
+                </div>
+
+                <div class="api-header-content">
+                    <div class="api-header-left">
+                        <div class="api-header-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <div class="api-header-info">
+                            <h1 th:text="${title}">API Title</h1>
+                            <div class="api-meta">
+                                <span class="method-pill">GET</span>
+                                <code th:text="${endpoint}">/api/endpoint</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-header-right">
+                        <div class="result-badge" th:if="${hasData}">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Success</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── ERROR STATE ── -->
+        <section class="error-section fade-in delay-1" th:if="${error}">
+            <div class="error-card">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="error-content">
+                    <h3>Failed to Fetch Data</h3>
+                    <p th:text="${error}">Something went wrong.</p>
+                </div>
+                <a th:href="@{/api-view(endpoint=${endpoint}, title=${title})}" class="btn btn-retry">
+                    <i class="fas fa-redo"></i> Retry
+                </a>
+            </div>
+        </section>
+
+        <!-- ── DATA VIEWER ── -->
+        <section class="viewer-section fade-in delay-1" th:if="${hasData}">
+            <div class="viewer-card">
+
+                <!-- View Mode Tabs -->
+                <div class="viewer-tabs">
+                    <button class="tab-btn active" data-view="tree">
+                        <i class="fas fa-sitemap"></i> Tree View
+                    </button>
+                    <button class="tab-btn" data-view="table" th:if="${isTableFriendly}">
+                        <i class="fas fa-table"></i> Table View
+                    </button>
+                    <button class="tab-btn" data-view="json">
+                        <i class="fas fa-code"></i> Raw JSON
+                    </button>
+
+                    <div class="tab-actions">
+                        <button class="btn-tool" id="copyBtn" title="Copy JSON">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="btn-tool" id="expandAll" title="Expand All">
+                            <i class="fas fa-plus-square"></i>
+                        </button>
+                        <button class="btn-tool" id="collapseAll" title="Collapse All">
+                            <i class="fas fa-minus-square"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ═══ TREE VIEW ═══ -->
+                <div class="view-panel active" id="treeView">
+                    <div class="json-tree" id="jsonTree"></div>
+                </div>
+
+                <!-- ═══ TABLE VIEW ═══ -->
+                <div class="view-panel" id="tableView" th:if="${isTableFriendly}">
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <thead>
+                            <tr>
+                                <th class="col-index">#</th>
+                                <th th:each="h : ${tableHeaders}" th:text="${h}">Column</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="row, iter : ${tableRows}">
+                                <td class="col-index" th:text="${iter.count}">1</td>
+                                <td th:each="h : ${tableHeaders}">
+                                    <span th:if="${row[h] == null}" class="null-val">null</span>
+                                    <span th:if="${row[h] != null && row[h].toString() == 'true'}" class="bool-true">
+                      <i class="fas fa-check"></i> true
+                    </span>
+                                    <span th:if="${row[h] != null && row[h].toString() == 'false'}" class="bool-false">
+                      <i class="fas fa-times"></i> false
+                    </span>
+                                    <span th:if="${row[h] != null
+                               && row[h].toString() != 'true'
+                               && row[h].toString() != 'false'}"
+                                          th:text="${row[h]}">Value</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ═══ RAW JSON VIEW ═══ -->
+                <div class="view-panel" id="jsonView">
+                    <pre class="json-code"><code id="jsonCode" th:text="${jsonData}"></code></pre>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Back -->
+        <div class="back-section fade-in delay-2">
+            <a th:href="@{/dashboard}" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p>&copy; 2025 BusGo — Developer Evaluation Dashboard</p>
+    </footer>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+    <i class="toast-icon fas"></i>
+    <span class="toast-msg"></span>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const jsonData = /*[[${jsonData}]]*/ '{}';
+    /*]]>*/
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  JSON TREE RENDERER
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    function renderTree(data, container) {
+        container.innerHTML = '';
+        const tree = document.createElement('ul');
+        tree.className = 'tree-root';
+        buildTree(data, tree);
+        container.appendChild(tree);
+    }
+
+    function buildTree(data, parent) {
+        if (Array.isArray(data)) {
+            data.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.className = 'tree-node';
+
+                if (typeof item === 'object' && item !== null) {
+                    const toggle = document.createElement('span');
+                    toggle.className = 'tree-toggle';
+                    toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                    toggle.addEventListener('click', () => toggleNode(li));
+
+                    const key = document.createElement('span');
+                    key.className = 'tree-key array-key';
+                    key.textContent = `[${index}]`;
+
+                    const type = document.createElement('span');
+                    type.className = 'tree-type';
+                    type.textContent = Array.isArray(item) ? 'Array' : 'Object';
+
+                    li.appendChild(toggle);
+                    li.appendChild(key);
+                    li.appendChild(type);
+
+                    const childUl = document.createElement('ul');
+                    childUl.className = 'tree-children';
+                    buildTree(item, childUl);
+                    li.appendChild(childUl);
+                } else {
+                    const key = document.createElement('span');
+                    key.className = 'tree-key';
+                    key.textContent = `[${index}]`;
+
+                    const value = document.createElement('span');
+                    value.className = 'tree-value ' + getValueType(item);
+                    value.textContent = formatValue(item);
+
+                    li.appendChild(key);
+                    li.appendChild(value);
+                }
+
+                parent.appendChild(li);
+            });
+        } else if (typeof data === 'object' && data !== null) {
+            Object.entries(data).forEach(([key, value]) => {
+                const li = document.createElement('li');
+                li.className = 'tree-node';
+
+                if (typeof value === 'object' && value !== null) {
+                    const toggle = document.createElement('span');
+                    toggle.className = 'tree-toggle';
+                    toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
+                    toggle.addEventListener('click', () => toggleNode(li));
+
+                    const keySpan = document.createElement('span');
+                    keySpan.className = 'tree-key';
+                    keySpan.textContent = key;
+
+                    const type = document.createElement('span');
+                    type.className = 'tree-type';
+                    type.textContent = Array.isArray(value) ? `Array(${value.length})` : 'Object';
+
+                    li.appendChild(toggle);
+                    li.appendChild(keySpan);
+                    li.appendChild(type);
+
+                    const childUl = document.createElement('ul');
+                    childUl.className = 'tree-children';
+                    buildTree(value, childUl);
+                    li.appendChild(childUl);
+                } else {
+                    const keySpan = document.createElement('span');
+                    keySpan.className = 'tree-key';
+                    keySpan.textContent = key;
+
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = 'tree-value ' + getValueType(value);
+                    valueSpan.textContent = formatValue(value);
+
+                    li.appendChild(keySpan);
+                    li.appendChild(valueSpan);
+                }
+
+                parent.appendChild(li);
+            });
+        }
+    }
+
+    function toggleNode(node) {
+        node.classList.toggle('collapsed');
+    }
+
+    function getValueType(val) {
+        if (val === null) return 'null';
+        if (typeof val === 'boolean') return 'boolean';
+        if (typeof val === 'number') return 'number';
+        if (typeof val === 'string') return 'string';
+        return '';
+    }
+
+    function formatValue(val) {
+        if (val === null) return 'null';
+        if (typeof val === 'boolean') return val.toString();
+        if (typeof val === 'string') return `"${val}"`;
+        return String(val);
+    }
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  TAB SWITCHING
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const view = btn.dataset.view;
+
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Update active panel
+            document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+            if (view === 'tree') document.getElementById('treeView').classList.add('active');
+            if (view === 'table') document.getElementById('tableView').classList.add('active');
+            if (view === 'json') document.getElementById('jsonView').classList.add('active');
+        });
+    });
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  TOOLBAR ACTIONS
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    document.getElementById('copyBtn')?.addEventListener('click', () => {
+        navigator.clipboard.writeText(jsonData).then(() => {
+            showToast('success', 'JSON copied to clipboard!');
+        });
+    });
+
+    document.getElementById('expandAll')?.addEventListener('click', () => {
+        document.querySelectorAll('.tree-node.collapsed').forEach(n => n.classList.remove('collapsed'));
+    });
+
+    document.getElementById('collapseAll')?.addEventListener('click', () => {
+        document.querySelectorAll('.tree-node').forEach(n => {
+            if (n.querySelector('.tree-children')) {
+                n.classList.add('collapsed');
+            }
+        });
+    });
+
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    //  INIT
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    if (jsonData && jsonData !== '{}') {
+        try {
+            const parsed = JSON.parse(jsonData);
+            renderTree(parsed, document.getElementById('jsonTree'));
+        } catch (e) {
+            console.error('JSON parse error:', e);
+        }
+    }
+
+    // Toast
+    function showToast(type, msg) {
+        const toast = document.getElementById('toast');
+        const icon = toast.querySelector('.toast-icon');
+        const text = toast.querySelector('.toast-msg');
+
+        toast.className = `toast show ${type}`;
+        icon.className = `toast-icon fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}`;
+        text.textContent = msg;
+
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Fade in
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

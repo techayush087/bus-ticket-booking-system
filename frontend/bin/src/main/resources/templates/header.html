@@ -1,0 +1,13 @@
+<nav class="navbar glass" th:fragment="navbar">
+  <a href="/" class="brand">BusBooking</a>
+
+  <div class="nav-links">
+    <a th:if="${session.token == null}" href="/login">Login</a>
+    <a th:if="${session.token != null}" href="/dashboard">Dashboard</a>
+    <a th:if="${session.token != null}" href="/buses">Buses</a>
+    <a th:if="${session.token != null}" href="/routes">Routes</a>
+    <a th:if="${session.token != null}" href="/bookings">Bookings</a>
+    <a th:if="${session.token != null}" href="/payments">Payments</a>
+    <a th:if="${session.token != null}" href="/logout" class="btn btn-outline btn-sm">Logout</a>
+  </div>
+</nav>

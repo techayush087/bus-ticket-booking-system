@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">API Response</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/view-layout :: background}"></div>
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+    <main class="content">
+
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-blue"><i class="fas fa-database"></i></div>
+            <div>
+                <h1 th:text="${title}">API Response</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+        </div>
+
+        <div class="json-card fade-in delay-1">
+            <div class="json-card-header">
+                <i class="fas fa-code"></i>
+                <span>Raw JSON Response</span>
+                <button class="btn-copy-json" onclick="copyJson()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+            <pre class="json-code" id="jsonOutput" th:text="${jsonData}"></pre>
+        </div>
+
+    </main>
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+<script th:inline="javascript">
+    const jsonData = /*[[${jsonData}]]*/ '{}';
+    function copyJson() {
+        navigator.clipboard.writeText(jsonData);
+    }
+</script>
+<script th:src="@{/js/view-common.js}"></script>
+</body>
+</html>

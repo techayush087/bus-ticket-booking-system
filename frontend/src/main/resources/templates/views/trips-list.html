@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">Trips</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/view-layout :: background}"></div>
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+    <main class="content">
+
+        <!-- Header -->
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-purple"><i class="fas fa-bus"></i></div>
+            <div>
+                <h1 th:text="${title}">Trips List</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+            <div class="header-badge">
+                <span>Total</span>
+                <strong th:text="${#lists.size(trips)}">0</strong>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state fade-in delay-1" th:if="${#lists.isEmpty(trips)}">
+            <i class="fas fa-bus-slash"></i>
+            <h3>No Trips Found</h3>
+            <p>This endpoint returned no trip data.</p>
+        </div>
+
+        <!-- Trip Cards -->
+        <div class="trip-cards fade-in delay-1" th:unless="${#lists.isEmpty(trips)}">
+            <div class="trip-card" th:each="t : ${trips}">
+
+                <!-- Route Header -->
+                <div class="trip-card-header">
+                    <div class="trip-route-display">
+                        <span class="city from" th:text="${t['fromCity']}">—</span>
+                        <div class="trip-arrow-track">
+                            <i class="fas fa-bus"></i>
+                        </div>
+                        <span class="city to" th:text="${t['toCity']}">—</span>
+                    </div>
+                    <div class="trip-badges">
+                        <span class="badge badge-blue" th:text="${t['busType']}">—</span>
+                        <span class="badge badge-green">₹<span th:text="${t['fare']}">0</span></span>
+                    </div>
+                </div>
+
+                <!-- Trip Body -->
+                <div class="trip-card-body">
+                    <div class="trip-info-grid">
+                        <div class="trip-info-item">
+                            <i class="fas fa-hashtag"></i>
+                            <div>
+                                <span>Trip ID</span>
+                                <strong th:text="${t['tripId']}">—</strong>
+                            </div>
+                        </div>
+                        <div class="trip-info-item">
+                            <i class="fas fa-couch"></i>
+                            <div>
+                                <span>Available Seats</span>
+                                <strong th:text="${t['availableSeats']}">—</strong>
+                            </div>
+                        </div>
+                        <div class="trip-info-item">
+                            <i class="fas fa-bus"></i>
+                            <div>
+                                <span>Bus Capacity</span>
+                                <strong th:text="${t['busCapacity']}">—</strong>
+                            </div>
+                        </div>
+                        <div class="trip-info-item">
+                            <i class="fas fa-route"></i>
+                            <div>
+                                <span>Route ID</span>
+                                <strong th:text="${t['routeId']}">—</strong>
+                            </div>
+                        </div>
+                        <div class="trip-info-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <span>Duration</span>
+                                <strong th:text="${t['durationFormatted']}">—</strong>
+                            </div>
+                        </div>
+                        <div class="trip-info-item">
+                            <i class="fas fa-map-signs"></i>
+                            <div>
+                                <span>Break Points</span>
+                                <strong th:text="${t['breakPoints']}">—</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Row -->
+                    <div class="time-row">
+                        <div class="time-block">
+                            <i class="fas fa-plane-departure"></i>
+                            <div>
+                                <span>Departure</span>
+                                <strong th:text="${t['departureTime']}">—</strong>
+                            </div>
+                        </div>
+                        <div class="time-divider"><i class="fas fa-long-arrow-alt-right"></i></div>
+                        <div class="time-block">
+                            <i class="fas fa-plane-arrival"></i>
+                            <div>
+                                <span>Arrival</span>
+                                <strong th:text="${t['arrivalTime']}">—</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boarding/Dropping -->
+                    <div class="address-row">
+                        <div class="address-block">
+                            <span class="addr-label"><i class="fas fa-map-pin"></i> Boarding</span>
+                            <span th:text="${t['boardingAddress']}">—</span>
+                            <span class="addr-city" th:text="${t['boardingCity']}">—</span>
+                        </div>
+                        <div class="address-block">
+                            <span class="addr-label"><i class="fas fa-map-marker-alt"></i> Dropping</span>
+                            <span th:text="${t['droppingAddress']}">—</span>
+                            <span class="addr-city" th:text="${t['droppingCity']}">—</span>
+                        </div>
+                    </div>
+
+                    <!-- Bus + Drivers Row -->
+                    <div class="bus-driver-row">
+                        <div class="bus-info-block">
+                            <i class="fas fa-bus"></i>
+                            <div>
+                                <span>Bus</span>
+                                <strong th:text="${t['busRegistrationNumber']}">—</strong>
+                                <small th:text="${t['busType']}">—</small>
+                            </div>
+                        </div>
+                        <div class="driver-info-block">
+                            <i class="fas fa-id-badge"></i>
+                            <div>
+                                <span>Driver 1</span>
+                                <strong th:text="${t['driver1Name']}">—</strong>
+                                <small th:text="${t['driver1Phone']}">—</small>
+                            </div>
+                        </div>
+                        <div class="driver-info-block" th:if="${t['driver2Name']} != null">
+                            <i class="fas fa-id-badge"></i>
+                            <div>
+                                <span>Driver 2</span>
+                                <strong th:text="${t['driver2Name']}">—</strong>
+                                <small th:text="${t['driver2Phone']}">—</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+<script th:src="@{/js/view-common.js}"></script>
+</body>
+</html>

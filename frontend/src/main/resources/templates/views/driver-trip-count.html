@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">Driver Trip Count</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/view-layout :: background}"></div>
+
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+
+    <main class="content">
+        <!-- Header -->
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-blue"><i class="fas fa-id-badge"></i></div>
+            <div>
+                <h1 th:text="${title}">Driver Trip Count</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+            <div class="header-badge">
+                <span>Drivers</span>
+                <strong th:text="${#lists.size(tripCounts)}">0</strong>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state fade-in delay-1" th:if="${#lists.isEmpty(tripCounts)}">
+            <i class="fas fa-user-slash"></i>
+            <h3>No Driver Data Found</h3>
+            <p>This endpoint returned no driver trip count data.</p>
+        </div>
+
+        <!-- Cards -->
+        <div class="stats-cards-grid fade-in delay-1" th:unless="${#lists.isEmpty(tripCounts)}">
+            <div class="stat-card" th:each="d : ${tripCounts}">
+                <div class="stat-card-header">
+                    <div class="stat-avatar"><i class="fas fa-user-tie"></i></div>
+                    <div class="stat-card-info">
+                        <h3 th:text="${d['driverName']}">Driver Name</h3>
+                        <span class="stat-id">
+              ID: <span th:text="${d['driverId']}">0</span>
+            </span>
+                    </div>
+                </div>
+
+                <div class="stat-card-body">
+                    <div class="stat-route-display">
+                        <span th:text="${d['fromCity']}">From</span>
+                        <i class="fas fa-arrow-right"></i>
+                        <span th:text="${d['toCity']}">To</span>
+                    </div>
+
+                    <div class="stat-count-display">
+                        <div class="stat-count-number" th:text="${d['totalTrips']}">0</div>
+                        <div class="stat-count-label">Total Trips</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table view (optional, useful for scanning) -->
+        <div class="table-card fade-in delay-2" th:unless="${#lists.isEmpty(tripCounts)}" style="margin-top:1.2rem;">
+            <div class="table-scroll">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th class="col-index">#</th>
+                        <th>Driver ID</th>
+                        <th>Driver Name</th>
+                        <th>From City</th>
+                        <th>To City</th>
+                        <th>Total Trips</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="d, iter : ${tripCounts}">
+                        <td class="col-index" th:text="${iter.count}">1</td>
+                        <td th:text="${d['driverId']}">1</td>
+                        <td th:text="${d['driverName']}">Raj Kumar</td>
+                        <td th:text="${d['fromCity']}">Mumbai</td>
+                        <td th:text="${d['toCity']}">Pune</td>
+                        <td class="font-bold" th:text="${d['totalTrips']}">1</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+
+<script th:src="@{/js/view-common.js}"></script>
+</body>
+</html>

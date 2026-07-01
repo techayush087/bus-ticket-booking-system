@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">Booking Payments</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet" />
+</head>
+<body>
+
+<div th:replace="~{fragments/view-layout :: background}"></div>
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+
+    <main class="content">
+
+        <!-- Page Header -->
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-green">
+                <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="page-header-text">
+                <h1 th:text="${title}">Booking Payments</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+
+            <!-- Summary Stats -->
+            <div class="summary-stats">
+                <div class="summary-stat">
+                    <span class="summary-number" th:text="${#lists.size(bookingPayments)}">0</span>
+                    <span class="summary-label">Total Records</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state fade-in delay-1"
+             th:if="${bookingPayments == null || #lists.isEmpty(bookingPayments)}">
+            <i class="fas fa-receipt"></i>
+            <h3>No Payment Records</h3>
+            <p>No booking payment data available.</p>
+        </div>
+
+        <!-- Table Section -->
+        <section class="fade-in delay-1"
+                 th:unless="${bookingPayments == null || #lists.isEmpty(bookingPayments)}">
+
+
+            <!-- Table -->
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table class="data-table" id="paymentsTable">
+                        <thead>
+                        <tr>
+                            <th class="col-index">#</th>
+                            <th>
+                  <span class="th-inner" data-col="bookingId">
+                    Booking ID
+                  </span>
+                            </th>
+                            <th>
+                  <span class="th-inner" data-col="customerName">
+                    Customer
+                  </span>
+                            </th>
+                            <th>Email</th>
+                            <th>
+                  <span class="th-inner" data-col="tripId">
+                    Trip ID
+                  </span>
+                            </th>
+                            <th>
+                  <span class="th-inner" data-col="seatNumber">
+                    Seat
+                  </span>
+                            </th>
+                            <th>
+                  <span class="th-inner" data-col="amount">
+                    Amount
+                  </span>
+                            </th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        <tr th:each="bp, i : ${bookingPayments}"
+                            th:data-customer="${bp['customerName']}"
+                            th:data-email="${bp['email']}"
+                            th:data-booking="${bp['bookingId']}"
+                            th:data-trip="${bp['tripId']}"
+                            th:data-status="${bp['paymentStatus']}">
+
+                            <td class="col-index" th:text="${i.count}">1</td>
+
+                            <td>
+                  <span class="booking-id-badge"
+                        th:text="'#' + ${bp['bookingId']}">—</span>
+                            </td>
+
+                            <td>
+                                <div class="customer-cell">
+                                    <div class="customer-avatar-sm">
+                                        <span th:text="${#strings.substring(bp['customerName'], 0, 1)}">A</span>
+                                    </div>
+                                    <span class="customer-name" th:text="${bp['customerName']}">—</span>
+                                </div>
+                            </td>
+
+                            <td class="email-cell" th:text="${bp['email']}">—</td>
+
+                            <td>
+                                <span class="trip-id-pill" th:text="'Trip ' + ${bp['tripId']}">—</span>
+                            </td>
+
+                            <td class="text-center">
+                                <span class="seat-badge" th:text="${bp['seatNumber']}">—</span>
+                            </td>
+
+                            <td>
+                  <span class="amount-value">
+                    ₹<span th:text="${bp['amount']}">0</span>
+                  </span>
+                            </td>
+
+                            <td>
+                  <span class="payment-status-pill"
+                        th:classappend="${bp['paymentStatus'] == 'Success'}
+                                        ? 'pill-success'
+                                        : (${bp['paymentStatus'] == 'Failed'}
+                                           ? 'pill-failed'
+                                           : 'pill-pending')"
+                        th:text="${bp['paymentStatus']}">—</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Table Footer -->
+                <div class="table-footer-bar">
+                    <span id="footerCount"></span>
+                    <code class="footer-endpoint" th:text="${endpoint}"></code>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+
+<script>
+
+    // Fade in
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

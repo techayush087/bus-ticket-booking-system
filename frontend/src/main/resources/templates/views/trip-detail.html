@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">Trip Detail</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/view-layout :: background}"></div>
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+    <main class="content">
+
+        <!-- Header -->
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-blue"><i class="fas fa-route"></i></div>
+            <div>
+                <h1 th:text="${title}">Trip Detail</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+            <div class="header-badge">
+                <span>Trip ID</span>
+                <strong th:text="${trip['tripId']}">#</strong>
+            </div>
+        </div>
+
+        <!-- ── ROUTE BANNER ── -->
+        <section class="route-banner fade-in delay-1">
+            <div class="route-from">
+                <i class="fas fa-map-marker-alt"></i>
+                <span th:text="${route['fromCity']}">From</span>
+            </div>
+            <div class="route-middle">
+                <div class="route-line">
+                    <span class="route-dot"></span>
+                    <div class="route-track">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <span class="route-dot"></span>
+                </div>
+                <div class="route-meta-row">
+                    <span><i class="fas fa-clock"></i> <span th:text="${route['durationFormatted']}">Duration</span></span>
+                    <span><i class="fas fa-map-signs"></i> <span th:text="${route['breakPoints']}">0</span> stops</span>
+                    <span><i class="fas fa-hashtag"></i> Route <span th:text="${route['routeId']}">0</span></span>
+                </div>
+            </div>
+            <div class="route-to">
+                <i class="fas fa-flag-checkered"></i>
+                <span th:text="${route['toCity']}">To</span>
+            </div>
+        </section>
+
+        <!-- ── INFO GRID ── -->
+        <div class="detail-grid fade-in delay-1">
+
+            <!-- Bus Info -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <i class="fas fa-bus"></i>
+                    <h3>Bus Information</h3>
+                </div>
+                <div class="detail-card-body">
+                    <div class="info-row">
+                        <span class="info-label">Registration</span>
+                        <span class="info-value mono" th:text="${bus['registrationNumber']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Type</span>
+                        <span class="info-value"><span class="badge badge-blue" th:text="${bus['type']}">—</span></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Capacity</span>
+                        <span class="info-value" th:text="${bus['capacity']} + ' seats'">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Agency</span>
+                        <span class="info-value" th:text="${bus['agencyName']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Office Mail</span>
+                        <span class="info-value small" th:text="${bus['officeMail']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Contact</span>
+                        <span class="info-value" th:text="${bus['officeContactPersonName']}">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Route Info -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <i class="fas fa-route"></i>
+                    <h3>Route Details</h3>
+                </div>
+                <div class="detail-card-body">
+                    <div class="info-row">
+                        <span class="info-label">Route ID</span>
+                        <span class="info-value mono" th:text="${route['routeId']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">From</span>
+                        <span class="info-value" th:text="${route['fromCity']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">To</span>
+                        <span class="info-value" th:text="${route['toCity']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value" th:text="${route['durationFormatted']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Break Points</span>
+                        <span class="info-value" th:text="${route['breakPoints']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Trip ID</span>
+                        <span class="info-value mono" th:text="${trip['tripId']}">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── DRIVERS TABLE ── -->
+        <section class="detail-section fade-in delay-2">
+            <div class="section-title-row">
+                <div class="section-title-icon"><i class="fas fa-id-badge"></i></div>
+                <h3>Assigned Drivers</h3>
+                <span class="count-badge" th:text="${#lists.size(drivers)} + ' drivers'"></span>
+            </div>
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>License</th>
+                            <th>Phone</th>
+                            <th>City</th>
+                            <th>State</th>
+                            <th>Agency</th>
+                            <th>Office Mail</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="d, i : ${drivers}">
+                            <td class="col-index" th:text="${i.count}">1</td>
+                            <td class="font-bold" th:text="${d['name']}">—</td>
+                            <td class="mono" th:text="${d['licenseNumber']}">—</td>
+                            <td th:text="${d['phone']}">—</td>
+                            <td th:text="${d['address'] != null ? d['address']['city'] : '—'}">—</td>
+                            <td th:text="${d['address'] != null ? d['address']['state'] : '—'}">—</td>
+                            <td th:text="${d['agencyName']}">—</td>
+                            <td class="small" th:text="${d['officeMail']}">—</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+<script th:src="@{/js/view-common.js}"></script>
+</body>
+</html>

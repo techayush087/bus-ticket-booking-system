@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">Agencies</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/view-layout :: background}"></div>
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+    <main class="content">
+
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-amber"><i class="fas fa-building"></i></div>
+            <div>
+                <h1 th:text="${title}">Agencies</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+            <div class="header-badge">
+                <span>Found</span>
+                <strong th:text="${#lists.size(agencies)}">0</strong>
+            </div>
+        </div>
+
+        <div class="empty-state fade-in delay-1" th:if="${#lists.isEmpty(agencies)}">
+            <i class="fas fa-building"></i>
+            <h3>No Agencies Found</h3>
+            <p>No agencies match the given criteria.</p>
+        </div>
+
+        <div class="cards-grid fade-in delay-1" th:unless="${#lists.isEmpty(agencies)}">
+            <div class="agency-card" th:each="a : ${agencies}">
+                <div class="agency-card-header">
+                    <div class="agency-avatar">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div>
+                        <h3 th:text="${a['name']}">Agency Name</h3>
+                        <span class="agency-id">ID: <span th:text="${a['agencyId']}">—</span></span>
+                    </div>
+                </div>
+                <div class="detail-card-body">
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-user"></i> Contact</span>
+                        <span class="info-value" th:text="${a['contactPersonName']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-envelope"></i> Email</span>
+                        <span class="info-value" th:text="${a['email']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-phone"></i> Phone</span>
+                        <span class="info-value mono" th:text="${a['phone']}">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+<script th:src="@{/js/view-common.js}"></script>
+</body>
+</html>

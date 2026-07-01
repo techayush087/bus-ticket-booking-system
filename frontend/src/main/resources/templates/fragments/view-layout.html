@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(pageTitle)">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${pageTitle} + ' — BusGo'">BusGo</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet" />
+</head>
+
+<!-- ── Shared Nav ── -->
+<nav th:fragment="topnav" class="topnav">
+    <div class="nav-left">
+        <a th:href="@{/dashboard}" class="btn-back">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <a href="/" class="nav-logo">
+            <div class="logo-icon"><i class="fas fa-bus-alt"></i></div>
+            <span>BusGo</span>
+        </a>
+        <div class="nav-divider"></div>
+        <div class="nav-breadcrumb">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <i class="fas fa-chevron-right"></i>
+            <span th:text="${title}">View</span>
+        </div>
+    </div>
+    <div class="nav-right">
+        <div class="dev-badge">
+            <i class="fas fa-database"></i>
+            <span>API Response</span>
+        </div>
+    </div>
+</nav>
+
+<!-- ── Shared Background ── -->
+<div th:fragment="background" class="bg-layer">
+    <div class="bg-shapes">
+        <div class="shape s1"></div>
+        <div class="shape s2"></div>
+        <div class="shape s3"></div>
+    </div>
+    <div class="bg-grid"></div>
+</div>
+
+<!-- ── Shared Footer ── -->
+<footer th:fragment="footer" class="page-footer">
+    <a th:href="@{/dashboard}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+    <p>&copy; 2025 BusGo — Developer Evaluation Dashboard</p>
+</footer>

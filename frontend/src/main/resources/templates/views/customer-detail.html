@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">Customer</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/view-layout :: background}"></div>
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+    <main class="content content-narrow">
+
+        <!-- Header -->
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-teal"><i class="fas fa-user"></i></div>
+            <div>
+                <h1 th:text="${title}">Customer Detail</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+        </div>
+
+        <!-- Customer Profile Card -->
+        <div class="profile-card fade-in delay-1">
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info">
+                <h2 th:text="${customer['name']}">Name</h2>
+                <span class="profile-id">Customer ID: <strong th:text="${customer['customerId']}">—</strong></span>
+            </div>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="detail-grid-2 fade-in delay-1">
+
+            <!-- Contact Info -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <i class="fas fa-address-card"></i>
+                    <h3>Contact Information</h3>
+                </div>
+                <div class="detail-card-body">
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-envelope"></i> Email</span>
+                        <span class="info-value" th:text="${customer['email']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-phone"></i> Phone</span>
+                        <span class="info-value mono" th:text="${customer['phone']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label"><i class="fas fa-id-badge"></i> Customer ID</span>
+                        <span class="info-value mono" th:text="${customer['customerId']}">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="detail-card">
+                <div class="detail-card-header">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Address</h3>
+                </div>
+                <div class="detail-card-body" th:if="${address != null}">
+                    <div class="info-row">
+                        <span class="info-label">Street</span>
+                        <span class="info-value" th:text="${address['address']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">City</span>
+                        <span class="info-value" th:text="${address['city']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">State</span>
+                        <span class="info-value" th:text="${address['state']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">ZIP Code</span>
+                        <span class="info-value mono" th:text="${address['zipCode']}">—</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Address ID</span>
+                        <span class="info-value mono" th:text="${address['addressId']}">—</span>
+                    </div>
+                </div>
+                <div class="empty-inline" th:unless="${address != null}">
+                    <i class="fas fa-map-marker-slash"></i> No address on record
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+<script th:src="@{/js/view-common.js}"></script>
+</body>
+</html>

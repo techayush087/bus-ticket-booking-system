@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">Driver Upcoming Trips</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div th:replace="~{fragments/view-layout :: background}"></div>
+<div class="page-wrapper">
+    <nav th:replace="~{fragments/view-layout :: topnav}"></nav>
+    <main class="content content-narrow">
+
+        <div class="page-header fade-in">
+            <div class="page-header-icon icon-blue"><i class="fas fa-calendar-check"></i></div>
+            <div>
+                <h1 th:text="${title}">Driver Upcoming Trips</h1>
+                <code class="endpoint-display" th:text="${endpoint}"></code>
+            </div>
+        </div>
+
+        <!-- Driver Info Card -->
+        <div class="driver-info-card fade-in delay-1">
+            <div class="driver-info-avatar">
+                <i class="fas fa-user-tie"></i>
+            </div>
+            <div class="driver-info-content">
+                <h2 th:text="${driver['driverName']}">Driver Name</h2>
+                <span class="driver-info-id">Driver ID: <strong th:text="${driver['driverId']}">—</strong></span>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state fade-in delay-2" th:if="${upcomingTrips == null || #lists.isEmpty(upcomingTrips)}">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No Upcoming Trips</h3>
+            <p>This driver has no scheduled trips at the moment.</p>
+        </div>
+
+        <!-- Upcoming Trips List -->
+        <div class="upcoming-trips-list fade-in delay-2" th:unless="${upcomingTrips == null || #lists.isEmpty(upcomingTrips)}">
+            <h3 class="upcoming-title">
+                <i class="fas fa-calendar-day"></i>
+                Scheduled Trips (<span th:text="${#lists.size(upcomingTrips)}">0</span>)
+            </h3>
+
+            <div class="upcoming-trip-item" th:each="trip : ${upcomingTrips}">
+                <div class="upcoming-trip-date">
+                    <i class="fas fa-calendar"></i>
+                    <span th:text="${trip['tripDate']}">—</span>
+                </div>
+                <div class="upcoming-trip-route">
+                    <span th:text="${trip['fromCity']}">—</span>
+                    <i class="fas fa-arrow-right"></i>
+                    <span th:text="${trip['toCity']}">—</span>
+                </div>
+                <div class="upcoming-trip-time">
+                    <i class="fas fa-clock"></i>
+                    <span th:text="${trip['departureTime']}">—</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    <footer th:replace="~{fragments/view-layout :: footer}"></footer>
+</div>
+<script th:src="@{/js/view-common.js}"></script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title} + ' — BusGo'">API View — BusGo</title>
+    <link rel="stylesheet" th:href="@{/css/api-view.css}" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet" />
+</head>
+
+<body>
+
+<!-- ───────────── BACKGROUND ───────────── -->
+<div class="bg-layer">
+    <div class="bg-shapes">
+        <div class="shape s1"></div>
+        <div class="shape s2"></div>
+        <div class="shape s3"></div>
+    </div>
+    <div class="bg-grid"></div>
+</div>
+
+<!-- ───────────── WRAPPER ───────────── -->
+<div class="page-wrapper">
+
+    <!-- ── TOP NAV ── -->
+    <nav class="topnav">
+        <div class="nav-left">
+            <a th:href="@{/dashboard}" class="btn-back" title="Back to Dashboard">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <a href="/" class="nav-logo">
+                <div class="logo-icon"><i class="fas fa-bus-alt"></i></div>
+                <span>BusGo</span>
+            </a>
+            <div class="nav-divider"></div>
+            <div class="nav-breadcrumb">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <i class="fas fa-chevron-right"></i>
+                <span th:text="${title}">API View</span>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="dev-badge">
+                <i class="fas fa-database"></i>
+                <span>API Response</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── CONTENT ── -->
+    <main class="content">
+
+        <!-- API Info Header -->
+        <section class="api-header fade-in">
+            <div class="api-header-card">
+                <div class="api-header-bg">
+                    <div class="ahb-s ahb-s1"></div>
+                    <div class="ahb-s ahb-s2"></div>
+                </div>
+
+                <div class="api-header-content">
+                    <div class="api-header-left">
+                        <div class="api-header-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <div class="api-header-info">
+                            <h1 th:text="${title}">API Title</h1>
+                            <div class="api-meta">
+                                <span class="method-pill">GET</span>
+                                <code th:text="${endpoint}">/api/endpoint</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="api-header-right">
+                        <!-- Row Count -->
+                        <div class="result-badge" th:if="${rows != null}">
+                            <i class="fas fa-table"></i>
+                            <span th:text="${#lists.size(rows)} + ' Records'">0 Records</span>
+                        </div>
+                        <!-- Column Count -->
+                        <div class="result-badge" th:if="${headers != null}">
+                            <i class="fas fa-columns"></i>
+                            <span th:text="${#lists.size(headers)} + ' Fields'">0 Fields</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── ERROR STATE ── -->
+        <section class="error-section fade-in delay-1" th:if="${error}">
+            <div class="error-card">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="error-content">
+                    <h3>Failed to Fetch Data</h3>
+                    <p th:text="${error}">Something went wrong.</p>
+                </div>
+                <a th:href="@{/api-view(endpoint=${endpoint}, title=${title})}" class="btn btn-retry">
+                    <i class="fas fa-redo"></i> Retry
+                </a>
+            </div>
+        </section>
+
+        <!-- ── EMPTY STATE ── -->
+        <section class="empty-section fade-in delay-1" th:if="${rows != null && #lists.isEmpty(rows)}">
+            <div class="empty-card">
+                <div class="empty-icon">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <h3>No Data Found</h3>
+                <p>This endpoint returned an empty response.</p>
+                <a th:href="@{/dashboard}" class="btn btn-outline-sm">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </section>
+
+        <!-- ── DATA TABLE ── -->
+        <section class="table-section fade-in delay-1" th:if="${tableRows != null && !#lists.isEmpty(tableRows)}">
+            <div class="table-card">
+
+                <!-- Table Toolbar -->
+                <div class="table-toolbar">
+                    <div class="toolbar-left">
+                        <div class="toolbar-info">
+                            <i class="fas fa-check-circle"></i>
+                            <span>
+          Showing <strong th:text="${#lists.size(tableRows)}">0</strong> records
+          with <strong th:text="${#lists.size(headers)}">0</strong> columns
+        </span>
+                        </div>
+                    </div>
+                    <div class="toolbar-right">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="tableSearch" placeholder="Search in table…" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-scroll">
+                    <table class="data-table" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th class="col-index">#</th>
+                            <th th:each="h : ${headers}" th:text="${h}">Column</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="rowCells, rowIter : ${tableRows}">
+                            <td class="col-index" th:text="${rowIter.count}">1</td>
+                            <td th:each="cell : ${rowCells}">
+                                <span class="null-val" th:if="${cell == null}">null</span>
+                                <span class="bool-true" th:if="${cell != null && cell.toString() == 'true'}">
+              <i class="fas fa-check"></i> true
+            </span>
+                                <span class="bool-false" th:if="${cell != null && cell.toString() == 'false'}">
+              <i class="fas fa-times"></i> false
+            </span>
+                                <span th:if="${cell != null && cell.toString() != 'true' && cell.toString() != 'false'}"
+                                      th:text="${cell}">Value</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Table Footer -->
+                <div class="table-footer">
+    <span class="footer-info">
+      <i class="fas fa-info-circle"></i>
+      Data fetched from <code th:text="${endpoint}">/api/…</code>
+    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Back -->
+        <div class="back-section fade-in delay-2">
+            <a th:href="@{/dashboard}" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <p>&copy; 2025 BusGo — Developer Evaluation Dashboard</p>
+    </footer>
+</div>
+
+<script>
+    // ── Client-side table search/filter ──
+    const searchInput = document.getElementById('tableSearch');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            const rows  = document.querySelectorAll('#dataTable tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    }
+
+    // Fade in
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.05 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
